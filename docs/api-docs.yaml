@@ -1,0 +1,57 @@
+openapi: 3.0.0
+info:
+  title: MyTree API
+  description: API pour l'application de généalogie MyTree.
+  version: "1.0.0"
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /users/register:
+    post:
+      summary: Inscription d'un nouvel utilisateur.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Utilisateur enregistré avec succès.
+  /users/authenticate:
+    post:
+      summary: Authentification d'un utilisateur.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Utilisateur authentifié avec succès.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
