@@ -2,13 +2,13 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const uri = process.env.DB_URI;
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+const MongoClient = require('mongodb').MongoClient;
+const MONGO_URL = 'mongodb://localhost:27017';
+// Avec callback
+MongoClient.connect(MONGO_URL, (err, database) => {
+ db = database;
+})
+
 
 async function connect() {
     try {
@@ -19,6 +19,16 @@ async function connect() {
       console.error("Connection to MongoDB failed", e);
       process.exit(1);
     }
+  } 
+
+async function disconnect() {
+    try {
+      await client.close();
+      console.log("Disconnected successfully from MongoDB");
+    } catch (e) {
+      console.error("Disconnection from MongoDB failed", e);
+      process.exit(1);
+    }
   }
-  
-  module.exports = { connect };  
+
+module.exports = { connect, disconnect };
