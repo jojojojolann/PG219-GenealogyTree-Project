@@ -4,7 +4,6 @@
   "description": "Genealogy tree project using Vue for frontend and Node/Express/MongoDB for backend",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon app.js",
     "client": "cd client && npm run serve"
