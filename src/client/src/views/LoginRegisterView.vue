@@ -97,7 +97,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
 *
 body, html {
@@ -110,16 +110,10 @@ body, html {
     background-color: #2c7056;
 }
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #2c7056;
-    transition: 1s ease-in-out;
-}
-.container {
     position: relative;
     width: 800px;
     height: 400px;
+    margin-top: 20vh;
     background-color: rgba(0, 0, 0, 0.125);
     display: flex;
     justify-content: center;
