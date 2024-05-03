@@ -12,14 +12,7 @@ const key = require('../../config/keys').secret;
  * @access Public
  */
 router.post('/register', (req, res) => {
-    let { email, password, confirm } = req.body;
-    
-    // Check for the datas
-    if(password !== confirm) {
-        return res.status(400).json({
-            msg : 'Password do not match'
-        });
-    }
+    let { email, password } = req.body;
 
     User.findOne({ email }).then(user => {
         if(user) {
@@ -76,6 +69,7 @@ router.post('/login', (req, res) => {
                 }, (err, token) => {
                     res.status(200).json({
                         success: true,
+                        user: user,
                         token: `Bearer ${token}`,
                         msg: 'You are now logged in'
                     });

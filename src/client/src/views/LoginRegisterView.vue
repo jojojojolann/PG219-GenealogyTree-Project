@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
@@ -46,52 +47,26 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['login', 'register']),
     toggleSlide(isSlide) {
       this.isSlided = isSlide;
-    },
-    async registerUser() {
-      try {
-        const response = await fetch('/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: this.registerForm.email,
-            password: this.registerForm.password
-          }),
+    }, 
+    loginUser() {
+      let user = {
+        email: this.loginForm.email,
+        password: this.loginForm.password
+      };
+      console.log(this.loginForm);
+      this.login(user)
+        .then(() => {
+          this.$router.push('/home');
+        })
+        .catch((error) => {
+          console.log(error);
         });
-        if (response.ok) {
-          const result = await response.json();
-          console.log('Registration successful', result);
-        } else {
-          console.error('Failed to register');
-        }
-      } catch (error) {
-        console.error('Failed to register', error);
-      }
     },
-    async loginUser() {
-      try {
-        const response = await fetch('/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: this.loginForm.email,
-            password: this.loginForm.password
-          }),
-        });
-        if (response.ok) {
-          const user = await response.json();
-          console.log('Login successful', user.email);
-        } else {
-          console.error('Failed to login');
-        }
-      } catch (error) {
-        console.error('Failed to login', error);
-      }
+    registerUser() {
+      console.log(this.registerForm);
     }
   }
 }

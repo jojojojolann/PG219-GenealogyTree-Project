@@ -1,44 +1,63 @@
 <template>
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <a class="navbar-brand text-white" href="/home">MyTree</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="/home">MyTree</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        Account
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><router-link to="/profile" class="dropdown-item">Profile</router-link></li>
-                        <li><router-link to="/logout" class="dropdown-item">Logout</router-link></li>
-                    </ul>
-                </li>
-            </ul>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Account
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><router-link to="/login-register" class="dropdown-item"
+                                    v-if="!isAuthenticated">Login</router-link></li>
+                            <li><router-link to="/profile" class="dropdown-item"
+                                    v-if="isAuthenticated">Profile</router-link></li>
+                            <li><router-link to="/logout" class="dropdown-item"
+                                    v-if="isAuthenticated">Logout</router-link></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
-  name: "AppNavbar",
+    computed: {
+        ...mapGetters(['isAuthenticated'])
+    },
+    methods: {
+        checkAuth() {
+            console.log(this.isAuthenticated);
+        }
+    },
+    mounted() {
+        this.checkAuth();
+    },
+    name: "AppNavbar",
 };
 </script>
 
+
 <style>
 body {
-  background-color: #2c7056;
-  color: white;
+    background-color: #2c7056;
+    color: white;
 }
+
 .navbar {
-  background-color: rgba(0, 0, 0, 0.25);
+    background-color: rgba(0, 0, 0, 0.25);
 }
+
 .navbar .dropdown-menu {
     right: 0;
     left: auto;
@@ -46,10 +65,14 @@ body {
     width: auto;
     text-align: center;
 }
+
 .navbar .dropdown-item {
-    padding: 0.5rem 1rem; /* Reduces padding, adjust as needed */
-    font-size: 0.9rem; /* Smaller font size if necessary */
+    padding: 0.5rem 1rem;
+    /* Reduces padding, adjust as needed */
+    font-size: 0.9rem;
+    /* Smaller font size if necessary */
 }
+
 .dropdown-menu {
     --bs-dropdown-zindex: 1000;
     --bs-dropdown-padding-x: 0;
