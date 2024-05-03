@@ -18,7 +18,7 @@
                                     v-if="!isAuthenticated">Login</router-link></li>
                             <li><router-link to="/profile" class="dropdown-item"
                                     v-if="isAuthenticated">Profile</router-link></li>
-                            <li><router-link to="/logout" class="dropdown-item"
+                            <li><router-link to="/" class="dropdown-item" @click.prevent="logoutUser"
                                     v-if="isAuthenticated">Logout</router-link></li>
                         </ul>
                     </li>
@@ -30,15 +30,24 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 export default {
     computed: {
         ...mapGetters(['isAuthenticated'])
     },
     methods: {
+        ...mapActions(['logout']),
         checkAuth() {
             console.log(this.isAuthenticated);
+        },
+        logoutUser() {
+            console.log("Logging out...");
+            this.logout().then(() => {
+                console.log('Logged out. Current token:', this.$store.state.token);
+                this.checkAuth();
+            });
         }
+
     },
     mounted() {
         this.checkAuth();

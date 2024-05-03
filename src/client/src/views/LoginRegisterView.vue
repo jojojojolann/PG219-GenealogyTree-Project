@@ -56,7 +56,6 @@ export default {
         email: this.loginForm.email,
         password: this.loginForm.password
       };
-      console.log(this.loginForm);
       this.login(user)
         .then(() => {
           this.$router.push('/home');
@@ -66,7 +65,17 @@ export default {
         });
     },
     registerUser() {
-      console.log(this.registerForm);
+      let user = {
+        email: this.registerForm.email,
+        password: this.registerForm.password
+      };
+      this.register(user)
+        .then(() => {
+          this.$router.push('/home');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
 }

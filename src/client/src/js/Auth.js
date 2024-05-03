@@ -1,5 +1,4 @@
 import axios from 'axios';
-import router from '../router/router';
 
 const state = {
     token: localStorage.getItem('token') || '',
@@ -20,25 +19,26 @@ const actions = {
         if (res.data.success) {
             const token = res.data.token;
             const user = res.data.user;
-
+    
             localStorage.setItem('token', token);
-            axios.defaults.headers.common['Authorization'] = token;
-            commit('auth_request', token, user);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            commit('auth_success', token, user);
+        }
+        return res;
+    },    
+    async register({ commit }, { email, password }) {
+        commit('register_request');
+        let res = await axios.post('http://localhost:3000/api/users/register', { email, password });
+        if (res.data.success !== undefined) {
+            commit('register_success');
         }
         return res;
     },
-    async register({ commit }, { email, password }) {
-        try {
-            const res = await axios.post('http://localhost:8000/api/users/register', { email, password });
-            commit('setUser', res.data);
-            router.push('/');
-        } catch (err) {
-            commit('setError', err.response.data.error);
-        }
-    },
     async logout({ commit }) {
-        commit('setUser', null);
-        router.push('/login');
+        await localStorage.removeItem('token');
+        commit('logout');
+        delete axios.defaults.headers.common['Authorization'];
+        return;
     }
 };
 
@@ -54,10 +54,17 @@ const mutations = {
     auth_error(state) {
         state.status = 'error';
     },
-    logout(state) {
-        state.status = '';
-        state.token = '';
+    register_request(state) {
+        state.status = 'loading';
     },
+    register_success(state) {
+        state.status = 'success';
+    },
+    logout(state) {
+        state.token = '';
+        state.user = {};
+        state.status = '';
+    },    
     setUser(state, user) {
         state.user = user;
     },
