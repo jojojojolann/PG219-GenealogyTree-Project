@@ -18,6 +18,8 @@
                                     v-if="!isAuthenticated">Login</router-link></li>
                             <li><router-link to="/" class="dropdown-item" @click.prevent="logoutUser"
                                     v-if="isAuthenticated">Logout</router-link></li>
+                            <li><router-link to="/admin" class="dropdown-item" 
+                                    v-if="isAdmin">Admin</router-link></li>
                         </ul>
                     </li>
                 </ul>
@@ -31,7 +33,7 @@
 import { mapGetters, mapActions } from 'vuex';
 export default {
     computed: {
-        ...mapGetters(['isAuthenticated'])
+        ...mapGetters(['isAuthenticated', 'isAdmin'])
     },
     methods: {
         ...mapActions(['logout']),
