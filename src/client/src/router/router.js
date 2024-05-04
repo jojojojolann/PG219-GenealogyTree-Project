@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import LoginRegisterView from '../views/LoginRegisterView.vue'
+import store from '../store/index'
 
 const routes = [
   {
@@ -20,7 +21,7 @@ const routes = [
     path: '/login-register',
     name: 'LoginRegister',
     component: LoginRegisterView,
-    meta: { layout: 'blank' }
+    meta: { requiresGuest:true, layout: 'blank' }
   }
 ]
 
@@ -29,4 +30,22 @@ const router = createRouter({
   routes
 });
 
-export default router
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.getters.isAuthenticated) {
+      next('/login-register');
+    } else {
+      next();
+    }
+  } else if (to.matched.some(record => record.meta.requiresGuest)) {
+    if (store.getters.isAuthenticated) {
+      next('/profile');
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
+export default router;

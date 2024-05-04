@@ -16,8 +16,6 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <li><router-link to="/login-register" class="dropdown-item"
                                     v-if="!isAuthenticated">Login</router-link></li>
-                            <li><router-link to="/profile" class="dropdown-item"
-                                    v-if="isAuthenticated">Profile</router-link></li>
                             <li><router-link to="/" class="dropdown-item" @click.prevent="logoutUser"
                                     v-if="isAuthenticated">Logout</router-link></li>
                         </ul>

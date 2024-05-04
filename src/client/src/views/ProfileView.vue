@@ -1,11 +1,28 @@
 <template>
     <div class="Profile">
-        <h1>Profile</h1>
+        <h4>Profile</h4>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">User Information</h5>
+                <li class="list-group-item">Email: {{ user?.email }}</li>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-export default {};
+import { mapGetters, mapActions } from 'vuex';
+export default {
+    computed: {
+        ...mapGetters(['user'])
+    },
+    methods: {
+        ...mapActions(['getProfile'])
+    },
+    created() {
+        this.getProfile();
+    }
+};
 </script>
 
 <style></style>
