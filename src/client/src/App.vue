@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <AppNavbar v-if="$route.meta.layout !== 'blank'"/>
-    <router-view/>
+    <div class="container">
+      <router-view/>
+    </div>
   </div>
 </template>
 

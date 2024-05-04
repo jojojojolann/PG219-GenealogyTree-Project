@@ -3,36 +3,46 @@ import axios from 'axios';
 const state = {
     token: localStorage.getItem('token') || '',
     user: {},
-    status: ''
+    status: '',
+    error: null
 };
 
 const getters = {
     isAuthenticated: state => !!state.token,
     authStatus: state => state.status,
-    user: state => state.user
+    user: state => state.user,
+    error: state => state.error
 };
 
 const actions = {
     async login({ commit }, { email, password }) {
         commit('auth_request');
-        let res = await axios.post('http://localhost:3000/api/users/login', { email, password });
-        if (res.data.success) {
-            const token = res.data.token;
-            const user = res.data.user;
-    
-            localStorage.setItem('token', token);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            commit('auth_success', token, user);
+        try {
+            let res = await axios.post('http://localhost:3000/api/users/login', { email, password });
+            if (res.data.success) {
+                const token = res.data.token;
+                const user = res.data.user;
+
+                localStorage.setItem('token', token);
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                commit('auth_success', token, user);
+            }
+            return res;
+        } catch (error) {
+            commit('auth_error', error);
         }
-        return res;
-    },    
+    },
     async register({ commit }, { email, password }) {
         commit('register_request');
-        let res = await axios.post('http://localhost:3000/api/users/register', { email, password });
-        if (res.data.success !== undefined) {
-            commit('register_success');
+        try {
+            let res = await axios.post('http://localhost:3000/api/users/register', { email, password });
+            if (res.data.success !== undefined) {
+                commit('register_success');
+            }
+            return res;
+        } catch (error) {
+            commit('register_error', error);
         }
-        return res;
     },
     async getProfile({ commit }) {
         commit('profile_request');
@@ -40,7 +50,7 @@ const actions = {
         console.log(res.data);
         commit('profile_success', res.data.user);
         return res;
-    },    
+    },
     async logout({ commit }) {
         await localStorage.removeItem('token');
         commit('logout');
@@ -52,38 +62,51 @@ const actions = {
 const mutations = {
     auth_request(state) {
         state.status = 'loading';
+        state.error = null;
     },
     auth_success(state, token, user) {
         state.token = token;
         state.user = user;
         state.status = 'success';
+        state.error = null;
     },
-    auth_error(state) {
+    auth_error(state, error) {
         state.status = 'error';
+        state.error = error.response.data.msg;
     },
     register_request(state) {
         state.status = 'loading';
+        state.error = null;
     },
     register_success(state) {
         state.status = 'success';
+        state.error = null;
+    },
+    register_error(state, error) {
+        state.status = 'error';
+        state.error = error.response.data.msg;
     },
     logout(state) {
         state.token = '';
         state.user = {};
         state.status = '';
-    },    
+        state.error = null;
+    },
     setUser(state, user) {
         state.user = user;
+        state.error = null;
     },
     setError(state, error) {
         state.error = error;
     },
     profile_request(state) {
         state.status = 'loading';
+        state.error = null;
     },
     profile_success(state, user) {
         state.user = user;
         state.status = 'success';
+        state.error = null;
     }
 };
 
