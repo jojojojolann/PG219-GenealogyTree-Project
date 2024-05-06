@@ -1,17 +1,27 @@
 <template>
-    <div>
-        <h1>Admin View</h1>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Registering</h3>
+    <div class="Profile">
+        <h4>Profile</h4>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">User Information</h5>
+                <li class="list-group-item">Email: {{ user?.email }}</li>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 export default {
-
+    computed: {
+        ...mapGetters(['user'])
+    },
+    methods: {
+        ...mapActions(['getProfile'])
+    },
+    created() {
+        this.getProfile();
+    }
 };
 </script>
 
