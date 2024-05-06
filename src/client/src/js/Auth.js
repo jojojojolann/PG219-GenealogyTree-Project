@@ -9,17 +9,16 @@ const state = {
 
 const getters = {
     isAuthenticated: state => !!state.token,
-    isAdmin: state => state.role === 'admin',
     authStatus: state => state.status,
     user: state => state.user,
     error: state => state.error
 };
 
 const actions = {
-    async login({ commit }, { userData }) {
+    async login({ commit }, { email, password }) {
         commit('auth_request');
         try {
-            let res = await axios.post('http://localhost:3000/api/users/login', { userData });
+            let res = await axios.post('http://localhost:3000/api/users/login', { email, password });
             if (res.data.success) {
                 const token = res.data.token;
                 const user = res.data.user;
@@ -33,10 +32,10 @@ const actions = {
             commit('auth_error', error);
         }
     },
-    async register({ commit }, { userData }) {
+    async register({ commit }, { email, password }) {
         commit('register_request');
         try {
-            let res = await axios.post('http://localhost:3000/api/users/register', { userData });
+            let res = await axios.post('http://localhost:3000/api/users/register', { email, password });
             if (res.data.success !== undefined) {
                 commit('register_success');
             }
@@ -69,7 +68,6 @@ const mutations = {
         state.token = token;
         state.user = user;
         state.status = 'success';
-        state.role = user.role;
         state.error = null;
     },
     auth_error(state, error) {

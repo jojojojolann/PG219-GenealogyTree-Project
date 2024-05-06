@@ -90,13 +90,12 @@ export default {
           if (response && response.success) {
             this.$router.push('/home');
           } else {
+            // Handle the error, maybe show a message
             console.log('Registration failed:', response.msg || 'Unknown error');
-            this.error = response.msg;
           }
         })
         .catch((error) => {
           console.log('Registration error:', error);
-          this.error = error.message || 'Unknown error';
         });
     }
   }
