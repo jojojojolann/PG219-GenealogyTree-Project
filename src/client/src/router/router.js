@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import Admin from '../views/AdminView.vue'
+import ProfileView from '../views/ProfileView.vue'
 import LoginRegisterView from '../views/LoginRegisterView.vue'
 import store from '../store/index'
 
@@ -12,9 +12,9 @@ const routes = [
     meta: { requiresAuth: true, layout: 'default' }
   },
   {
-    path: '/admin',
-    name: 'admin',
-    component: Admin,
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView,
     meta: { requiresAuth: true, layout: 'default' }
   },
   {
@@ -39,7 +39,7 @@ router.beforeEach((to, from, next) => {
     }
   } else if (to.matched.some(record => record.meta.requiresGuest)) {
     if (store.getters.isAuthenticated) {
-      next('/home');
+      next('/profile');
     } else {
       next();
     }
