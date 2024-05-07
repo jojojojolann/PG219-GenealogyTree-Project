@@ -36,9 +36,14 @@ router.post('/register', (req, res) => {
             }
             newUser.password = hash;
             newUser.save().then(user => {
-                return res.status(201).json({
-                    success : true,
-                    msg : 'User is now registered'
+                const payload = { user: { id: user._id } };
+                jwt.sign(payload, key, { expiresIn: '24h' }, (err, token) => {
+                    if(err) throw err;
+                    return res.status(201).json({
+                        success : true,
+                        msg : 'User is now registered',
+                        token
+                    });
                 });
             });
         });
