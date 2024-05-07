@@ -1,4 +1,5 @@
 <template>
+  <img src="../../public/logo.png" alt="logo" class="logo"/>
   <div :class="{ 'slide': isSlided }" class="container">
     <div class="box signin">
       <h2>Already Have An Account ?</h2>
@@ -102,6 +103,13 @@ export default {
 </script>
 
 <style scoped>
+.logo {
+  display: block;
+  margin: 0 auto;
+  width: 150px;
+  height: auto;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
 
 * body,
@@ -119,7 +127,7 @@ html {
   position: relative;
   width: 800px;
   height: 400px;
-  margin-top: 20vh;
+  margin-top: 0vh;
   background-color: rgba(0, 0, 0, 0.125);
   display: flex;
   justify-content: center;
