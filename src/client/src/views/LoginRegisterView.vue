@@ -69,8 +69,8 @@ export default {
       };
       this.login(user)
         .then((response) => {
-          if (response && response.success) {
-            this.$router.push('/home');
+          if (response.data.success) {
+            this.$router.push('/');
           } else {
             console.log('Login failed:', response.msg || 'Unknown error');
           }
@@ -87,10 +87,9 @@ export default {
       };
       this.register(user)
         .then((response) => {
-          if (response && response.success) {
+          if (response.data.success) {
             this.$router.push('/home');
           } else {
-            // Handle the error, maybe show a message
             console.log('Registration failed:', response.msg || 'Unknown error');
           }
         })

@@ -1,60 +1,54 @@
+import router from '@/router/router';
 import axios from 'axios';
 
 const state = {
     token: localStorage.getItem('token') || '',
-    user: {},
     status: '',
+    user: {},
     error: null
 };
 
 const getters = {
     isAuthenticated: state => !!state.token,
-    authStatus: state => state.status,
+    authState: state => state.status,
     user: state => state.user,
     error: state => state.error
 };
 
 const actions = {
-    async login({ commit }, { email, password }) {
+    async login({ commit }, user) {
         commit('auth_request');
         try {
-            let res = await axios.post('http://localhost:3000/api/users/login', { email, password });
+            let res = await axios.post("http://localhost:3000/api/users/login", user);
             if (res.data.success) {
                 const token = res.data.token;
                 const user = res.data.user;
-
                 localStorage.setItem('token', token);
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 commit('auth_success', token, user);
             }
             return res;
-        } catch (error) {
-            commit('auth_error', error);
+        } catch (err) {
+            commit('auth_error', err);
         }
     },
-    async register({ commit }, { email, password }) {
+    async register({ commit }, userData) {
         commit('register_request');
         try {
-            let res = await axios.post('http://localhost:3000/api/users/register', { email, password });
+            let res = await axios.post("http://localhost:3000/api/users/register", userData);
             if (res.data.success !== undefined) {
                 commit('register_success');
             }
             return res;
-        } catch (error) {
-            commit('register_error', error);
+        } catch (err) {
+            commit('register_error', err);
         }
-    },
-    async getProfile({ commit }) {
-        commit('profile_request');
-        let res = await axios.get('http://localhost:3000/api/users/profile');
-        console.log(res.data);
-        commit('profile_success', res.data.user);
-        return res;
     },
     async logout({ commit }) {
         await localStorage.removeItem('token');
         commit('logout');
         delete axios.defaults.headers.common['Authorization'];
+        router.push('/login-register');
         return;
     }
 };
@@ -70,9 +64,9 @@ const mutations = {
         state.status = 'success';
         state.error = null;
     },
-    auth_error(state, error) {
+    auth_error(state, err) {
+        state.error = err.response.data.msg;
         state.status = 'error';
-        state.error = error.response.data.msg;
     },
     register_request(state) {
         state.status = 'loading';
@@ -82,37 +76,21 @@ const mutations = {
         state.status = 'success';
         state.error = null;
     },
-    register_error(state, error) {
-        state.status = 'error';
-        state.error = error.response.data.msg;
+    register_error(state, err) {
+        state.error = err.response.data.msg
+        state.status = 'error'
     },
     logout(state) {
-        state.token = '';
-        state.user = {};
         state.status = '';
-        state.error = null;
-    },
-    setUser(state, user) {
-        state.user = user;
-        state.error = null;
-    },
-    setError(state, error) {
-        state.error = error;
-    },
-    profile_request(state) {
-        state.status = 'loading';
-        state.error = null;
-    },
-    profile_success(state, user) {
-        state.user = user;
-        state.status = 'success';
+        state.token = '';
+        state.user = '';
         state.error = null;
     }
 };
 
 export default {
     state,
-    getters,
     actions,
-    mutations
+    mutations,
+    getters
 };

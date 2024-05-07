@@ -21,7 +21,7 @@ const routes = [
     path: '/login-register',
     name: 'LoginRegister',
     component: LoginRegisterView,
-    meta: { requiresGuest:true, layout: 'blank' }
+    meta: { requiresGuest: true, layout: 'blank' }
   }
 ]
 
@@ -39,7 +39,7 @@ router.beforeEach((to, from, next) => {
     }
   } else if (to.matched.some(record => record.meta.requiresGuest)) {
     if (store.getters.isAuthenticated) {
-      next('/profile');
+      next('/home');
     } else {
       next();
     }
