@@ -38,6 +38,8 @@ const actions = {
             let res = await axios.post("http://localhost:3000/api/users/register", userData);
             if (res.data.success !== undefined) {
                 commit('register_success');
+                localStorage.setItem('token', res.data.token);
+                commit('setToken', res.data.token);
             }
             return res;
         } catch (err) {
@@ -85,6 +87,9 @@ const mutations = {
         state.token = '';
         state.user = '';
         state.error = null;
+    },
+    setToken(state, token) {
+        state.token = token;
     }
 };
 
