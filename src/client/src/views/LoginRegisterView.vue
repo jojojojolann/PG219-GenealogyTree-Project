@@ -37,6 +37,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import Errors from "../components/ErrorMsg.vue";
+import axios from 'axios';
 
 export default {
   data() {
@@ -86,9 +87,11 @@ export default {
         email: this.registerForm.email,
         password: this.registerForm.password
       };
+
       this.register(user)
         .then((response) => {
           if (response.data.success) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
             this.$router.push('/home');
           } else {
             console.log('Registration failed:', response.msg || 'Unknown error');

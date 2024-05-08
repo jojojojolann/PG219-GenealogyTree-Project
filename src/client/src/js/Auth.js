@@ -61,6 +61,9 @@ const actions = {
                 commit('setToken', res.data.token);
                 commit('setUser', res.data.user);
                 commit('setRole', res.data.user.role);
+
+                localStorage.setItem('token', res.data.token);
+                commit('setToken', res.data.token);
             }
             return res;
         } catch (err) {

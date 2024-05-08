@@ -128,6 +128,26 @@ router.put('/demote/:email', async (req, res) => {
       success: true,
       msg: 'User is now a user',
       user
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if(err) {
+                return res.status(400).json({
+                    msg : 'Error while hashing the password'
+                });
+            }
+            newUser.password = hash;
+            newUser.save().then(user => {
+                const payload = { user: { id: user._id } };
+                jwt.sign(payload, key, { expiresIn: '24h' }, (err, token) => {
+                    if(err) throw err;
+                    return res.status(201).json({
+                        success : true,
+                        msg : 'User is now registered',
+                        token
+                    });
+                });
+            });
+        });
     });
     } catch (err) {
       console.error(err);
