@@ -17,7 +17,7 @@
                             <li><router-link to="/login-register" class="dropdown-item"
                                     v-if="!isAuthenticated">Login</router-link></li>
                             <li><router-link to="/admin-dashboard" class="dropdown-item" 
-                                v-if="isAdmin">Dashboard</router-link></li>
+                                    v-if="isAdmin">Dashboard</router-link></li>
                             <li><router-link to="/" class="dropdown-item" @click.prevent="logoutUser"
                                     v-if="isAuthenticated">Logout</router-link></li>
                         </ul>
