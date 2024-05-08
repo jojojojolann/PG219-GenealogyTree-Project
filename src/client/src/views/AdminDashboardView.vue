@@ -20,9 +20,9 @@
             <button class="btn btn-danger m-1" v-if="user.email !== currentUserEmail && user.role !== 'admin'" 
             @click="deleteUser(user.email)" disa>Delete</button>
             <button class="btn btn-danger m-1" v-if="user.email !== currentUserEmail && megaAdmin && user.role === 'admin'" 
-            @click="deleteUser(user.email)">Demote</button>
-            <button class="btn btn-warning m-1 text-white" v-if="user.email !== currentUserEmail && user.role !== 'admin'" 
             @click="demoteUser(user.email)">Demote</button>
+            <button class="btn btn-primary m-1 text-white" v-if="user.email !== currentUserEmail && user.role !== 'admin'" 
+            @click="promoteUser(user.email)">Promote</button>
           </div>
         </div>
       </div>
