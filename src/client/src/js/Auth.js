@@ -4,13 +4,14 @@ import axios from 'axios';
 const state = {
     token: localStorage.getItem('token') || '',
     status: '',
-    user: {},
+    user: JSON.parse(localStorage.getItem('user')) || {},
     role: localStorage.getItem('role') || '',
     error: null
 };
 
 const getters = {
     isAuthenticated: state => !!state.token,
+    isAdmin: state => state.role === 'admin',
     authState: state => state.status,
     user: state => state.user,
     role: state => state.role,

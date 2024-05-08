@@ -97,37 +97,55 @@ router.get('/profile', passport.authenticate('jwt', { session : false }), (req, 
  * @desc Promote user to admin
  * @access Private
  */
-router.put('/promote/:email', (req, res) => {
-    User.findOneAndUpdate({ email: req.params.email }, { role: 'admin' }).then(user => {
-        if (err) {
-            return res.status(400).json({
-                msg : 'Error while promoting the user'
-            });
-        }
-        return res.status(200).json({
-            success : true,
-            msg : 'User is now an admin'
-        });
+router.put('/promote/:email', async (req, res) => {
+  try {
+    const user = await User.findOneAndUpdate({ email: req.params.email }, { role: 'admin' }, { new: true });
+
+    if (!user) {
+      return res.status(404).json({
+        msg: 'User not found'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      msg: 'User is now an admin',
+      user
     });
-})
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      msg: 'Error while promoting the user'
+    });
+  }
+});
 
 /**
  * @route DELETE api/users/:email
  * @desc Delete user
  * @access Private
  */
-router.delete('/delete/:email', (req, res) => {
-    User.findOneAndRemove({ email: req.params.email }, (err) => {
-        if (err) {
-            return res.status(400).json({
-                msg : 'Error while deleting the user'
-            });
-        }
-        return res.status(200).json({
-            success : true,
-            msg : 'User is deleted'
-        });
+router.delete('/delete/:email', async (req, res) => {
+  try {
+    const user = await User.findOneAndDelete({ email: req.params.email });
+
+    if (!user) {
+      return res.status(404).json({
+        msg: 'User not found'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      msg: 'User is deleted',
+      user
     });
-})
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      msg: 'Error while deleting the user'
+    });
+  }
+});
 
 module.exports = router;
