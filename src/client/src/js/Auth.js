@@ -5,6 +5,7 @@ const state = {
     token: localStorage.getItem('token') || '',
     status: '',
     user: {},
+    role: localStorage.getItem('role') || '',
     error: null
 };
 
@@ -12,6 +13,7 @@ const getters = {
     isAuthenticated: state => !!state.token,
     authState: state => state.status,
     user: state => state.user,
+    role: state => state.role,
     error: state => state.error
 };
 
@@ -23,9 +25,18 @@ const actions = {
             if (res.data.success) {
                 const token = res.data.token;
                 const user = res.data.user;
+                const role = user.role;
+
                 localStorage.setItem('token', token);
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                commit('auth_success', token, user);
+                localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem('role', role);
+
+                commit('setToken', token);
+                commit('setUser', user);
+                commit('setRole', role);
+
+                commit('auth_success', token, user, role);
             }
             return res;
         } catch (err) {
@@ -38,6 +49,15 @@ const actions = {
             let res = await axios.post("http://localhost:3000/api/users/register", userData);
             if (res.data.success !== undefined) {
                 commit('register_success');
+
+                localStorage.setItem('token', res.data.token);
+                axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+                localStorage.setItem('user', JSON.stringify(res.data.user));
+                localStorage.setItem('role', res.data.user.role);
+
+                commit('setToken', res.data.token);
+                commit('setUser', res.data.user);
+                commit('setRole', res.data.user.role);
             }
             return res;
         } catch (err) {
@@ -46,6 +66,8 @@ const actions = {
     },
     async logout({ commit }) {
         await localStorage.removeItem('token');
+        await localStorage.removeItem('user');
+        await localStorage.removeItem('role');
         commit('logout');
         delete axios.defaults.headers.common['Authorization'];
         router.push('/login-register');
@@ -58,14 +80,15 @@ const mutations = {
         state.status = 'loading';
         state.error = null;
     },
-    auth_success(state, token, user) {
+    auth_success(state, token, user, role) {
         state.token = token;
         state.user = user;
+        state.role = role;
         state.status = 'success';
         state.error = null;
     },
     auth_error(state, err) {
-        state.error = err.response.data.msg;
+        state.error = err.response ? err.response.data.msg : err.message;
         state.status = 'error';
     },
     register_request(state) {
@@ -85,6 +108,15 @@ const mutations = {
         state.token = '';
         state.user = '';
         state.error = null;
+    },
+    setToken(state, token) {
+        state.token = token;
+    },
+    setUser(state, user) {
+        state.user = user;
+    },
+    setRole(state, role) {
+        state.role = role;
     }
 };
 
