@@ -110,6 +110,34 @@ router.put('/promote/:email', async (req, res) => {
 });
 
 /**
+ * @route PUT api/users/demote/:email
+ * @desc Demote user to user
+ * @access Private
+ */
+router.put('/demote/:email', async (req, res) => {
+  try {
+    const user = await User.findOneAndUpdate({ email: req.params.email }, { role: 'user' }, { new: true });
+
+    if (!user) {
+      return res.status(404).json({
+        msg: 'User not found'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      msg: 'User is now a user',
+      user
+    });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({
+        msg: 'Error while demoting the user'
+      });
+  }
+});
+
+/**
  * @route DELETE api/users/:email
  * @desc Delete user
  * @access Private

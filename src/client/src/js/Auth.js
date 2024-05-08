@@ -86,7 +86,7 @@ const actions = {
     },
     async deleteUser({ commit }, email) {
         try {
-            await axios.delete(`http://localhost:3000/api/users/${email}`);
+            await axios.delete(`http://localhost:3000/api/users/delete/${email}`);
             commit('deleteUser', email);
         } catch (err) {
             console.log(err);
@@ -100,7 +100,15 @@ const actions = {
           console.log('Error fetching users:', err);
         }
         return;
-    },      
+    }, 
+    async demoteUser({ commit }, email) {
+        try {
+            await axios.put(`http://localhost:3000/api/users/demote/${email}`);
+            commit('demoteUser', email);
+        } catch (err) {
+            console.log(err);
+        }
+    }     
 };
 
 const mutations = {
@@ -151,11 +159,15 @@ const mutations = {
         user.role = 'admin';
     },
     deleteUser(state, email) {
-        state.user = state.user.filter(user => user.email !== email);
-    },
+        state.users = state.users.filter(user => user.email !== email);
+    },      
     setUsers(state, users) {
         state.users = users;
-    },  
+    },
+    demoteUser(state, email) {
+        const user = state.user.find(user => user.email === email);
+        user.role = 'user';
+    }
 };
 
 export default {
