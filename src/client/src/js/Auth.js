@@ -4,9 +4,10 @@ import axios from 'axios';
 const state = {
     token: localStorage.getItem('token') || '',
     status: '',
-    user: JSON.parse(localStorage.getItem('user')) || {},
+    user: {},
     role: localStorage.getItem('role') || '',
-    error: null
+    error: null,
+    users: []
 };
 
 const getters = {
@@ -15,7 +16,8 @@ const getters = {
     authState: state => state.status,
     user: state => state.user,
     role: state => state.role,
-    error: state => state.error
+    error: state => state.error,
+    users: state => state.users
 };
 
 const actions = {
@@ -89,7 +91,16 @@ const actions = {
         } catch (err) {
             console.log(err);
         }
-    }
+    },
+    async fetchUsers({ commit }) {
+        try {
+          const res = await axios.get('http://localhost:3000/api/users/list');
+          commit('setUsers', res.data);
+        } catch (err) {
+          console.log('Error fetching users:', err);
+        }
+        return;
+    },      
 };
 
 const mutations = {
@@ -141,7 +152,10 @@ const mutations = {
     },
     deleteUser(state, email) {
         state.user = state.user.filter(user => user.email !== email);
-    }
+    },
+    setUsers(state, users) {
+        state.users = users;
+    },  
 };
 
 export default {

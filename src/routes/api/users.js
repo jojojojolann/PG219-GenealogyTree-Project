@@ -137,4 +137,21 @@ router.delete('/delete/:email', async (req, res) => {
   }
 });
 
+/**
+ * @route GET api/users/list
+ * @desc Get all users
+ * @access Private
+ */
+router.get('/list', async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.json(users);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      msg: 'Error while getting the users'
+    });
+  }
+});
+
 module.exports = router;
