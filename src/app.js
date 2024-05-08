@@ -28,10 +28,6 @@ mongoose.connect(db, { useNewUrlParser: true}).then(() => {
 const users = require('./routes/api/users');
 app.use('/api/users', users);
 
-app.get('*', (req, res) =>
-    res.sendFile(path.join(__dirname, 'public/index.html'))
-);
-
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log('Server running on port 3000');

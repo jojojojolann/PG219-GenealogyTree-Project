@@ -16,8 +16,8 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <li><router-link to="/login-register" class="dropdown-item"
                                     v-if="!isAuthenticated">Login</router-link></li>
-                            <li><router-link to="/profile" class="dropdown-item"
-                                    v-if="isAuthenticated">Profile</router-link></li>
+                            <li><router-link to="/admin-dashboard" class="dropdown-item" 
+                                    v-if="isAdmin">Dashboard</router-link></li>
                             <li><router-link to="/" class="dropdown-item" @click.prevent="logoutUser"
                                     v-if="isAuthenticated">Logout</router-link></li>
                         </ul>
@@ -33,7 +33,7 @@
 import { mapGetters, mapActions } from 'vuex';
 export default {
     computed: {
-        ...mapGetters(['isAuthenticated'])
+        ...mapGetters(['isAuthenticated', 'isAdmin'])
     },
     methods: {
         ...mapActions(['logout']),
@@ -70,16 +70,13 @@ body {
 .navbar .dropdown-menu {
     right: 0;
     left: auto;
-    max-width: 100%;
     width: auto;
     text-align: center;
 }
 
 .navbar .dropdown-item {
     padding: 0.5rem 1rem;
-    /* Reduces padding, adjust as needed */
     font-size: 0.9rem;
-    /* Smaller font size if necessary */
 }
 
 .dropdown-menu {
