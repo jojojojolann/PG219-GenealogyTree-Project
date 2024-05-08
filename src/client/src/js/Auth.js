@@ -73,6 +73,22 @@ const actions = {
         delete axios.defaults.headers.common['Authorization'];
         router.push('/login-register');
         return;
+    },
+    async promoteUser({ commit }, email) {
+        try {
+            await axios.put(`http://localhost:3000/api/users/promote/${email}`);
+            commit('promoteUser', email);
+        } catch (err) {
+            console.log(err);
+        }
+    },
+    async deleteUser({ commit }, email) {
+        try {
+            await axios.delete(`http://localhost:3000/api/users/${email}`);
+            commit('deleteUser', email);
+        } catch (err) {
+            console.log(err);
+        }
     }
 };
 
@@ -118,6 +134,13 @@ const mutations = {
     },
     setRole(state, role) {
         state.role = role;
+    },
+    promoteUser(state, email) {
+        const user = state.user.find(user => user.email === email);
+        user.role = 'admin';
+    },
+    deleteUser(state, email) {
+        state.user = state.user.filter(user => user.email !== email);
     }
 };
 

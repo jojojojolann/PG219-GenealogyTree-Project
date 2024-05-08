@@ -82,17 +82,6 @@ router.post('/login', async (req, res) => {
   });
 
 /**
- * @route GET api/users/profile
- * @desc User's profile
- * @access Private
- */
-router.get('/profile', passport.authenticate('jwt', { session : false }), (req, res) => {
-    return res.json({
-        user : req.user
-    });
-});
-
-/**
  * @route PUT api/users/:email
  * @desc Promote user to admin
  * @access Private
