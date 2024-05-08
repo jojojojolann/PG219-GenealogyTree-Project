@@ -128,6 +128,7 @@ router.put('/demote/:email', async (req, res) => {
       success: true,
       msg: 'User is now a user',
       user
+    });
     bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
             if(err) {
