@@ -26,7 +26,9 @@ mongoose.connect(db, { useNewUrlParser: true}).then(() => {
 
 // Routes
 const users = require('./routes/api/users');
+const persons = require('./routes/api/persons');
 app.use('/api/users', users);
+app.use('/api/persons', persons);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

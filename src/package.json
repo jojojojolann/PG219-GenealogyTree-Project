@@ -23,6 +23,7 @@
     "nodemon": "^3.1.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "uuid": "^9.0.1",
     "vue": "^3.4.26",
     "vue-router": "^4.3.2"
   }

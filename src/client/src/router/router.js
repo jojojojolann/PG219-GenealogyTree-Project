@@ -7,7 +7,7 @@ import store from '../store/index'
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: HomeView,
     meta: { requiresAuth: true, layout: 'default' }
