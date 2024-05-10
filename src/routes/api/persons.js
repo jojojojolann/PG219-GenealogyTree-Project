@@ -127,4 +127,61 @@ router.put('/edit/:id', async (req, res) => {
     }
 });
 
+/**
+ * @route GET api/person/list
+ * @desc Get all persons
+ * @access Public
+ */
+router.get('/list', async (req, res) => {
+    try {
+        const persons = await Person.find();
+        if (!persons) {
+            return res.status(404).json({ msg: 'No person found' });
+        } else {
+            res.status(200).json({ persons });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'Server error' });
+    }
+});
+
+/**
+ * @route GET api/person/children/:id
+ * @desc Get all children of a person
+ * @access Public
+ */
+router.get('/list/:id', async (req, res) => {
+    try {
+        const person = await Person.findOne({ id: req.params.id });
+        if (!person) {
+            return res.status(404).json({ msg: 'Person not found' });
+        } else {
+            res.status(200).json({ children: person.children });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'Server error' });
+    }
+});
+
+/**
+ * @route GET api/person/parents/:id
+ * @desc Get parents of a person
+ * @access Public
+ */
+router.get('/parents/:id', async (req, res) => {
+    try {
+        const person = await Person.findOne({ id: req.params.id });
+        if (!person) {
+            return res.status(404).json({ msg: 'Person not found' });
+        } else {
+            res.status(200).json({ father: person.father, mother: person.mother });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'Server error' });
+    }
+});
+
 module.exports = router;
