@@ -10,50 +10,39 @@ const { v4: uuidv4 } = require('uuid');
  */
 router.post('/create', async (req, res) => {
     try {
-        const person = new Person({
-            id: uuidv4(),
-            lastname: req.body.lastname,
-            firstname: req.body.firstname,
-            gender: req.body.gender,
-            birthdate: req.body.birthdate,
-            deathdate: req.body.deathdate,
+        const { firstname, lastname, birthdate, deathdate } = req.body;
+        const id = uuidv4();
+        const newPerson = new Person({
+            firstname,
+            lastname,
+            birthdate,
+            deathdate,
+            id,
             father: {
-                id: uuidv4(),
-                lastname: req.body.father.lastname,
-                firstname: req.body.father.firstname,
-                gender: "M",
-                birthdate: req.body.father.birthdate,
-                deathdate: req.body.father.deathdate,
+                firstname: '',
+                lastname: '',
+                birthdate: '',
+                deathdate: '',
+                id: ''
             },
             mother: {
-                id: uuidv4(),
-                lastname: req.body.mother.lastname,
-                firstname: req.body.mother.firstname,
-                gender: "F",
-                birthdate: req.body.mother.birthdate,
-                deathdate: req.body.mother.deathdate,
+                firstname: '',
+                lastname: '',
+                birthdate: '',
+                deathdate: '',
+                id: ''
             },
             spouse: {
-                id: uuidv4(),
-                lastname: req.body.spouse.lastname,
-                firstname: req.body.spouse.firstname,
-                gender: req.body.spouse.gender,
-                birthdate: req.body.spouse.birthdate,
-                deathdate: req.body.spouse.deathdate,
+                firstname: '',
+                lastname: '',
+                birthdate: '',
+                deathdate: '',
+                id: ''
             },
-            children: req.body.children.map(child => {
-                return {
-                    id: uuidv4(),
-                    lastname: child.lastname,
-                    firstname: child.firstname,
-                    gender: child.gender,
-                    birthdate: child.birthdate,
-                    deathdate: child.deathdate,
-                }
-            })   
-        })
-        await person.save();
-        res.status(201).json({ msg: 'Person is now registered', id: person.id });
+            children: []
+        });
+        await newPerson.save();
+        res.status(200).json({ msg: 'Person is created', id: newPerson.id });
     } catch (err) {
         console.error(err);
         res.status(500).json({ msg: 'Server error' });

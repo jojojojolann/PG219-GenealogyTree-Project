@@ -1,43 +1,38 @@
 const mongoose = require('mongoose');
 
 const personSchema = new mongoose.Schema({
-    id: { type: String, unique: true, required: true },
-    lastname: { type: String },
     firstname: { type: String },
-    gender: { type: String },
+    lastname: { type: String },
     birthdate: { type: String },
     deathdate: { type: String },
+    id: { type: String },
     father: {
-        id: { type: String, unique: true },
-        lastname: { type: String },
         firstname: { type: String },
-        gender: { type: String },
+        lastname: { type: String },
         birthdate: { type: String },
         deathdate: { type: String },
+        id: { type: String }
     },
     mother: {
-        id: { type: String, unique: true },
-        lastname: { type: String },
         firstname: { type: String },
-        gender: { type: String },
+        lastname: { type: String },
         birthdate: { type: String },
         deathdate: { type: String },
+        id: { type: String }
     },
     spouse: {
-        id: { type: String, unique: true },
-        lastname: { type: String },
         firstname: { type: String },
-        gender: { type: String },
+        lastname: { type: String },
         birthdate: { type: String },
         deathdate: { type: String },
+        id: { type: String }
     },
     children: [{
-        id: { type: String, unique: true },
-        lastname: { type: String },
         firstname: { type: String },
-        gender: { type: String },
+        lastname: { type: String },
         birthdate: { type: String },
         deathdate: { type: String },
+        id: { type: String }
     }]
 });
 
