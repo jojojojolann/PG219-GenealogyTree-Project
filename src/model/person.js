@@ -6,34 +6,22 @@ const personSchema = new mongoose.Schema({
     birthdate: { type: String },
     deathdate: { type: String },
     id: { type: String },
-    father: {
-        firstname: { type: String },
-        lastname: { type: String },
-        birthdate: { type: String },
-        deathdate: { type: String },
-        id: { type: String }
-    },
-    mother: {
-        firstname: { type: String },
-        lastname: { type: String },
-        birthdate: { type: String },
-        deathdate: { type: String },
-        id: { type: String }
-    },
-    spouse: {
-        firstname: { type: String },
-        lastname: { type: String },
-        birthdate: { type: String },
-        deathdate: { type: String },
-        id: { type: String }
-    },
-    children: [{
-        firstname: { type: String },
-        lastname: { type: String },
-        birthdate: { type: String },
-        deathdate: { type: String },
-        id: { type: String }
-    }]
+    father: { 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Person'
+     },
+    mother: { 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Person'
+     },
+    children: [{ 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Person'
+     }],
+    spouse: { 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Person'
+     }
 });
 
 module.exports = mongoose.model('Person', personSchema);

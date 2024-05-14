@@ -30,6 +30,10 @@ const routes = [
     component: AdminDashboardView,
     meta: { requiresAuth: true, requiresAdmin: true },
   },
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/home'
+  }
 ]
 
 const router = createRouter({

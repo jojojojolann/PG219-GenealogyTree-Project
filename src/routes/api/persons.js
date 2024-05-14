@@ -17,28 +17,10 @@ router.post('/create', async (req, res) => {
             lastname,
             birthdate,
             deathdate,
-            id,
-            father: {
-                firstname: '',
-                lastname: '',
-                birthdate: '',
-                deathdate: '',
-                id: ''
-            },
-            mother: {
-                firstname: '',
-                lastname: '',
-                birthdate: '',
-                deathdate: '',
-                id: ''
-            },
-            spouse: {
-                firstname: '',
-                lastname: '',
-                birthdate: '',
-                deathdate: '',
-                id: ''
-            },
+            id: id,
+            father: null,
+            mother: null,
+            spouse: null,
             children: []
         });
         await newPerson.save();
@@ -140,7 +122,7 @@ router.get('/list', async (req, res) => {
  * @desc Get all children of a person
  * @access Public
  */
-router.get('/list/:id', async (req, res) => {
+router.get('/children/:id', async (req, res) => {
     try {
         const person = await Person.findOne({ id: req.params.id });
         if (!person) {
@@ -166,6 +148,25 @@ router.get('/parents/:id', async (req, res) => {
             return res.status(404).json({ msg: 'Person not found' });
         } else {
             res.status(200).json({ father: person.father, mother: person.mother });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'Server error' });
+    }
+});
+
+/**
+ * @route GET api/person/spouse/:id
+ * @desc Get spouse of a person
+ * @access Public
+ */
+router.get('/spouse/:id', async (req, res) => {
+    try {
+        const person = await Person.findOne({ id: req.params.id });
+        if (!person) {
+            return res.status(404).json({ msg: 'Person not found' });
+        } else {
+            res.status(200).json({ spouse: person.spouse });
         }
     } catch (err) {
         console.error(err);
