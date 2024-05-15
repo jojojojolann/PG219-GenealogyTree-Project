@@ -33,7 +33,7 @@
             <option value="Polygender">Polygender</option>
             <option value="Queer">Queer</option>
             <option value="Third gender">Third gender</option>
-            <option value="Trans">Transgedner</option>
+            <option value="Transgender">Transgender</option>
             <option value="Transsexual">Transsexual</option>
             <option value="Travesti">Travesti</option>
             <option value="Trigender">Trigender</option>
@@ -45,22 +45,123 @@
         </form>
       </div>
     </div>
-  </div>
-  <section class="treeMainContainer">
-    <div class="treeContainer d_f">
-      <div class="_NewBranch d_f">
-        <div class="_treeBranch hasChildren">
-          <div class="_treeRaw d_f">
-            <div class="_treeLeaf d_f">
-              <div class="t_Data d_f">
-                <p class="shortName">{{ familyMemberName }}</p>
+    <section ref="treeMainContainer" class="treeMainContainer" @mousedown="handleMouseDown" @mousemove="handleMouseMove"
+      @mouseup="handleMouseUp" @mouseleave="handleMouseUp">>
+      <div class="treeContainer d_f">
+        <div class="_NewBranch d_f">
+          <div class="_treeRoot d_f">
+            <div class="_treeBranch hasChildren">
+              <div class="_treeRaw d_f">
+                <div class="_treeLeaf d_f">
+                  <div class="t_Data d_f">
+                    <p class="shortName">0</p>
+                  </div>
+                </div>
+              </div>
+              <div class="_NewBranch d_f">
+                <div class="_treeRoot d_f">
+                  <div class="_treeBranch hasChildren">
+                    <div class="_treeRaw d_f">
+                      <div class="_treeLeaf d_f">
+                        <div class="t_Data d_f">
+                          <p class="shortName">1</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="_NewBranch d_f">
+                      <div class="_treeRoot d_f">
+                        <div class="_treeBranch">
+                          <div class="_treeRaw d_f">
+                            <div class="_treeLeaf d_f">
+                              <div class="t_Data d_f">
+                                <p class="shortName">2</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="_treeRoot d_f">
+                        <div class="_treeBranch hasChildren">
+                          <div class="_treeRaw d_f">
+                            <div class="_treeLeaf d_f">
+                              <div class="t_Data d_f">
+                                <p class="shortName">3</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="_NewBranch d_f">
+                            <div class="_treeRoot d_f">
+                              <div class="_treeBranch">
+                                <div class="_treeRaw d_f">
+                                  <div class="_treeLeaf d_f">
+                                    <div class="t_Data d_f">
+                                      <p class="shortName">5</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="_treeRoot d_f">
+                  <div class="_treeBranch hasChildren">
+                    <div class="_treeRaw d_f">
+                      <div class="_treeLeaf d_f">
+                        <div class="t_Data d_f">
+                          <p class="shortName">6</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="_NewBranch d_f">
+                      <div class="_treeRoot d_f">
+                        <div class="_treeBranch hasChild">
+                          <div class="_treeRaw d_f">
+                            <div class="_treeLeaf d_f">
+                              <div class="t_Data d_f">
+                                <p class="shortName">7</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="_NewBranch d_f">
+                            <div class="_treeRoot d_f">
+                              <div class="_treeBranch">
+                                <div class="_treeRaw d_f">
+                                  <div class="_treeLeaf d_f">
+                                    <div class="t_Data d_f">
+                                      <p class="shortName">8</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="_treeRoot d_f">
+                        <div class="_treeBranch">
+                          <div class="_treeRaw d_f">
+                            <div class="_treeLeaf d_f">
+                              <div class="t_Data d_f">
+                                <p class="shortName">9</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -75,10 +176,13 @@ export default {
       persons: [],
       firstname: '',
       lastname: '',
-      gender: '',
       birthdate: '',
       deathdate: '',
-      familyMemberName: 'Test',
+      isDragging: false,
+      startX: 0,
+      startY: 0,
+      scrollLeft: 0,
+      scrollTop: 0,
     };
   },
   methods: {
@@ -96,7 +200,6 @@ export default {
       }
 
       this.loading = true;
-      console.log('true');
       axios.post(`http://localhost:3000/api/persons/create/`, {
         firstname: this.firstname,
         lastname: this.lastname,
@@ -115,28 +218,49 @@ export default {
           this.loading = false;
         });
     },
+    handleMouseDown(event) {
+      this.isDragging = true;
+      this.startX = event.pageX - this.$refs.treeMainContainer.offsetLeft;
+      this.startY = event.pageY - this.$refs.treeMainContainer.offsetTop;
+      this.scrollLeft = this.$refs.treeMainContainer.scrollLeft;
+      this.scrollTop = this.$refs.treeMainContainer.scrollTop;
+    },
+    handleMouseMove(event) {
+      if (!this.isDragging) return;
+      event.preventDefault();
+      const x = event.pageX - this.$refs.treeMainContainer.offsetLeft;
+      const y = event.pageY - this.$refs.treeMainContainer.offsetTop;
+      const walkX = (x - this.startX) * 1.5; // Adjust the scroll speed
+      const walkY = (y - this.startY) * 1.5;
+      this.$refs.treeMainContainer.scrollLeft = this.scrollLeft - walkX;
+      this.$refs.treeMainContainer.scrollTop = this.scrollTop - walkY;
+    },
+    handleMouseUp() {
+      this.isDragging = false;
+    },
   }
 };
+
 </script>
 
 <style scoped>
 .container {
   display: flex;
-  justify-content: center;
-  width: 60%;
-  height: 100vh;
-  background-color: #2c7056;
-  color: #333
+  gap: 10px;
 }
 
 .formBox {
+  flex: 1;
   background-color: #ebf4f3;
-  width: 70%;
-  height: 70%;
-  padding: 20px;
+  width: 30%;
+  max-width: 30%;
+  height: 60%;
+  min-height: 60vh;
+  padding: 10px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+  color: #333;
   align-items: center;
-  display: flex;
+  justify-content: center;
 }
 
 .form {
@@ -215,25 +339,52 @@ body {
 
 section {
   width: 100%;
-  height: 100vh;
   position: relative;
   float: left;
   z-index: 0;
 }
 
 .treeMainContainer {
+  flex: 1;
   margin: 0 auto;
-  max-width: 100%;
-  width: 100vw;
-  margin-bottom: 10vh;
+  width: 70%;
+  height: 60%;
+  max-height: 60vh;
   background-color: #ebf4f3;
+  overflow: hidden;
+  position: relative;
 }
 
 .treeContainer {
-  width: 100%;
+  width: 150%;
+  height: 150%;
   position: relative;
   padding: 50px;
   z-index: 0;
+}
+
+.treeMainContainer {
+  cursor: grab;
+}
+
+.treeMainContainer:active {
+  cursor: grabbing;
+}
+
+.treeMainContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.treeMainContainer:focus {
+  outline: none;
+}
+
+.treeMainContainer {
+  overflow: auto;
+}
+
+.treeContainer:active {
+  cursor: grabbing;
 }
 
 ._treeRoot {
@@ -269,7 +420,7 @@ section {
   width: 100%;
   justify-content: center;
   align-items: flex-start;
-  padding-bottom: var(--borderGap);
+  padding-bottom: 25px;
   z-index: 1;
   margin: 0 15px;
 }
@@ -415,9 +566,9 @@ section {
 .hasChildren>._treeRaw::after {
   content: '';
   width: 1px;
-  height: var(--borderGap);
+  height: 25px;
   position: absolute;
-  top: calc(100% - var(--borderGap));
+  top: calc(100% - 25px);
   left: calc(50% - 0.5px);
   background-color: #555;
 }
@@ -427,7 +578,7 @@ section {
 }
 
 .hasChildren>._NewBranch {
-  padding-top: var(--borderGap);
+  padding-top: 25px;
 }
 
 .hasChildren>._NewBranch>._treeRoot::before,
@@ -442,8 +593,8 @@ section {
   position: absolute;
   right: 50%;
   width: 50%;
-  height: var(--borderGap);
-  top: calc(0% - var(--borderGap));
+  height: 25px;
+  top: calc(0% - 25px);
   border-top: 1px solid #333;
 }
 
@@ -464,7 +615,7 @@ section {
   content: '';
   width: 1px;
   position: absolute;
-  height: var(--borderGap);
+  height: 25px;
   background-color: #333;
   bottom: 100%;
 }
