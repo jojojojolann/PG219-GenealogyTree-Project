@@ -13,33 +13,6 @@
           <select id="gender" name="gender">
             <option value="M">M</option>
             <option value="F">F</option>
-            <option value="Abinary">Abinary</option>
-            <option value="Agender">Agender</option>
-            <option value="Ambigender">Ambigender</option>
-            <option value="Bigender">Bigender</option>
-            <option value="Binary">Binary</option>
-            <option value="Cisgender">Cisgender</option>
-            <option value="Demigender">Demigender</option>
-            <option value="Dual gender">Dual gender</option>
-            <option value="Eunuch">Eunuch</option>
-            <option value="Gender diverse">Gender diverse</option>
-            <option value="Genderless">Genderless</option>
-            <option value="Genderqueer">Genderqueer</option>
-            <option value="Intersex">Intersex</option>
-            <option value="Multigender">Multigender</option>
-            <option value="Non-binary">Non-binary</option>
-            <option value="Omnigender">Omnigender</option>
-            <option value="Pangender">Pangender</option>
-            <option value="Polygender">Polygender</option>
-            <option value="Queer">Queer</option>
-            <option value="Third gender">Third gender</option>
-            <option value="Transgender">Transgender</option>
-            <option value="Transsexual">Transsexual</option>
-            <option value="Travesti">Travesti</option>
-            <option value="Trigender">Trigender</option>
-            <option value="Vakasalewalewa">Vakasalewalewa</option>
-            <option value="Waria">Waria</option>
-            <option value="X-gender">X-gender</option>
           </select>
           <input type="submit" value="Add" :disabled="loading" />
         </form>
