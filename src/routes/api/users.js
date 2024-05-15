@@ -116,9 +116,9 @@ router.put('/promote/:email', async (req, res) => {
  */
 router.put('/demote/:email', async (req, res) => {
   try {
-    const user = await User.findOneAndUpdate({ email: req.params.email }, { role: 'user' }, { new: true });
+    const newUser = await User.findOneAndUpdate({ email: req.params.email }, { role: 'user' }, { new: true });
 
-    if (!user) {
+    if (!newUser) {
       return res.status(404).json({
         msg: 'User not found'
       });
