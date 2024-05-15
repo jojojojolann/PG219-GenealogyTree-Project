@@ -46,15 +46,29 @@
       </div>
     </div>
   </div>
+  <section class="treeMainContainer">
+    <div class="treeContainer d_f">
+      <div class="_NewBranch d_f">
+        <div class="_treeBranch hasChildren">
+          <div class="_treeRaw d_f">
+            <div class="_treeLeaf d_f">
+              <div class="t_Data d_f">
+                <p class="shortName">{{ familyMemberName }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
 import axios from 'axios';
 import moment from 'moment';
-import { mapActions } from 'vuex';
 
 export default {
-  name: 'FrontPage',
+  name: 'HomeView',
   data() {
     return {
       loading: false,
@@ -64,10 +78,10 @@ export default {
       gender: '',
       birthdate: '',
       deathdate: '',
+      familyMemberName: 'Test',
     };
   },
   methods: {
-    ...mapActions(['fetchPersons']),
     handleAddButton() {
       if (!this.firstname || !this.lastname || !this.birthdate) {
         return alert("Fill out all of the input fields!");
@@ -101,11 +115,7 @@ export default {
           this.loading = false;
         });
     },
-  },
-  async created() {
-    await this.fetchPersons();
-    this.persons = this.$store.state.Persons.persons;
-  },
+  }
 };
 </script>
 
@@ -162,5 +172,300 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
   background-color: #8cc9a5;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* colors */
+  --black: #3e3e3e;
+  --white: #ebf4f3;
+  --baseBg: #ebf4f3;
+  --green: #2c7056;
+  --lightGreen: #8cc9a5;
+
+
+  /* Animation */
+  --transition: all 0.1s ease-in-out;
+
+  /* font name */
+  --roboto: 'Roboto', sans-serif;
+  --borderGap: 25px;
+}
+
+body {
+  font-size: 22px;
+  line-height: 36px;
+  color: #3e3e3e;
+  font-family: var(--jameel);
+  background-color: #ebf4f3;
+}
+
+.d_f {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+}
+
+section {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  float: left;
+  z-index: 0;
+}
+
+.treeMainContainer {
+  margin: 0 auto;
+  max-width: 100%;
+  width: 100vw;
+  margin-bottom: 10vh;
+  background-color: #ebf4f3;
+}
+
+.treeContainer {
+  width: 100%;
+  position: relative;
+  padding: 50px;
+  z-index: 0;
+}
+
+._treeRoot {
+  width: 100%;
+  position: relative;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  z-index: 0;
+}
+
+._treeBranch {
+  width: auto;
+  height: min-content;
+  position: relative;
+  min-height: 20px;
+  z-index: 0;
+}
+
+._treeRaw {
+  position: relative;
+  width: 100%;
+  z-index: 0;
+}
+
+._treeRaw.active,
+._treeRoot.active {
+  z-index: 10;
+}
+
+._treeLeaf {
+  position: relative;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-start;
+  padding-bottom: var(--borderGap);
+  z-index: 1;
+  margin: 0 15px;
+}
+
+._treeData {
+  min-width: 300px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  border: 1px solid #333;
+  font-size: 20px;
+  background-color: #fff;
+  padding: 0 50px;
+  white-space: nowrap;
+  position: relative;
+  text-align: center;
+  margin-right: 10px;
+  z-index: 0;
+}
+
+._treeData:last-child {
+  margin-right: 0;
+}
+
+._NewBranch {
+  position: relative;
+  justify-content: center;
+  align-content: flex-start;
+  align-items: flex-start;
+}
+
+._NewBranch>div {
+  flex: 1;
+}
+
+.t_Data {
+  margin: 0 auto;
+  position: relative;
+  width: fit-content;
+  min-width: 100px;
+  height: 50px;
+  background-color: #2c7056;
+  color: #ebf4f3;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 5px;
+  transition: var(--transition);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.t_Data p {
+  flex: 1;
+  font-size: 16px;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.t_Data:hover,
+.t_Data.active {
+  background-color: #8cc9a5;
+  color: #ebf4f3;
+}
+
+.t_Data:hover ._readMore,
+
+.t_Data.active {
+  background-color: #2c7056;
+  z-index: 10;
+}
+
+.t_Data.active ._readMore {
+  transform: rotate(0deg);
+}
+
+.t_Data.active .optnsCnt {
+  display: block;
+}
+
+.t_Data.active .optnBx {
+  margin-top: 0;
+}
+
+.optnsCnt {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.optnBx {
+  position: relative;
+  height: 65px;
+  background-color: #ebf4f3;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding: 8px 6px;
+  margin-bottom: 5px;
+  margin-top: -200px;
+  transition: var(--transition);
+}
+
+.optnBx::after {
+  content: '';
+  width: 1px;
+  height: 20px;
+  background-color: #333;
+  position: absolute;
+  left: calc(50% - 0.5px);
+  top: calc(50% - 10px);
+}
+
+.optnBx a {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  margin: 2px;
+  line-height: 55px;
+  border-radius: 5px;
+  font-size: 24px;
+  text-align: right;
+  padding: 0 15px 0 10px;
+  transition: var(--transition);
+}
+
+.optnBx a i {
+  width: 30px;
+  font-size: 22px;
+  margin-left: 10px;
+}
+
+.optnBx a:hover {
+  background-color: #2c7056;
+  color: #ebf4f3;
+}
+
+.hasChild>._treeRaw::after,
+.hasChildren>._treeRaw::after {
+  content: '';
+  width: 1px;
+  height: var(--borderGap);
+  position: absolute;
+  top: calc(100% - var(--borderGap));
+  left: calc(50% - 0.5px);
+  background-color: #555;
+}
+
+.hasChild>._treeRaw:last-child::after {
+  display: none;
+}
+
+.hasChildren>._NewBranch {
+  padding-top: var(--borderGap);
+}
+
+.hasChildren>._NewBranch>._treeRoot::before,
+.hasChildren>._NewBranch>._treeRoot::after {
+  display: block;
+}
+
+._NewBranch>._treeRoot::before,
+._NewBranch>._treeRoot::after {
+  display: none;
+  content: '';
+  position: absolute;
+  right: 50%;
+  width: 50%;
+  height: var(--borderGap);
+  top: calc(0% - var(--borderGap));
+  border-top: 1px solid #333;
+}
+
+._NewBranch>._treeRoot::before {
+  right: 0;
+}
+
+._NewBranch>._treeRoot::after {
+  left: 0;
+}
+
+._NewBranch>._treeRoot:first-child::after,
+._NewBranch>._treeRoot:last-child::before {
+  display: none;
+}
+
+.hasChildren>._NewBranch>._treeRoot ._treeLeaf::after {
+  content: '';
+  width: 1px;
+  position: absolute;
+  height: var(--borderGap);
+  background-color: #333;
+  bottom: 100%;
 }
 </style>
