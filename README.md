@@ -38,7 +38,6 @@ MyTree propose les fonctionnalités suivantes :
 
 - **Inscription et Connexion** : Système sécurisé d'authentification des utilisateurs.
 - **Gestion des Membres** : Ajout, modification, et suppression de membres dans l'arbre généalogique.
-- **Visualisation Interactive** : Affichage interactif et intuitif de l'arbre généalogique.
 - **Protection des Routes** : Accès sécurisé aux différentes parties de l'application selon le rôle de l'utilisateur.
 - **API RESTful** : Gestion des utilisateurs et des membres de l'arbre via des API (GET, POST, PUT, DELETE).
 - **Design Responsive** : Interface utilisateur adaptative et stylisée avec CSS.
