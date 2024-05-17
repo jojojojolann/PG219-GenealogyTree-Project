@@ -30,4 +30,4 @@ MyTree est développée avec une pile technologique MERN (MongoDB, Express.js, V
 
 ## Répartition
 1. Mathieu ANTOINE : Page HomeView et Affichage de l'arbre.
-2. Jolann MADEC : Login/Register (JWT), Protection des routes, CSS, Rôle utilisateurs, API users (GET, POST, PUT, DELETE), API people (GET, POST, PUT, DELETE) et BDD
+2. Jolann MADEC : Login/Register (JWT) et gestion des erreurs, Protection des routes, CSS, Rôle utilisateurs, API users (GET, POST, PUT, DELETE), API people (GET, POST, PUT, DELETE) et BDD
