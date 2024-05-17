@@ -1,7 +1,7 @@
 <template>
   <br>
   <br>
-  <div class="container">
+  <div class="fcontainer">
     <div class="formBox">
       <div class="form">
         <form @submit.prevent="handleAddButton">
@@ -10,7 +10,7 @@
           <input type="text" v-model="lastname" placeholder="Last Name" required />
           <input type="text" v-model="birthdate" placeholder="Birthday (dd/mm/yyyy)" required />
           <input type="text" v-model="deathdate" placeholder="Deathday (dd/mm/yyyy)" />
-          <select id="gender" name="gender">
+          <select id="gender" v-model="gender" name="gender">
             <option value="M">M</option>
             <option value="F">F</option>
           </select>
@@ -19,7 +19,7 @@
       </div>
     </div>
     <section ref="treeMainContainer" class="treeMainContainer" @mousedown="handleMouseDown" @mousemove="handleMouseMove"
-      @mouseup="handleMouseUp" @mouseleave="handleMouseUp">>
+      @mouseup="handleMouseUp" @mouseleave="handleMouseUp">
       <div class="treeContainer d_f">
         <div class="_NewBranch d_f">
           <div class="_treeRoot d_f">
@@ -135,22 +135,35 @@
       </div>
     </section>
   </div>
+  <div class="container">
+      <div class="row">
+        <div class="col-md-3" v-for="person in listpersons" :key="person.id">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">{{ person.firstname }} {{ person.lastname }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'HomeView',
   data() {
     return {
       loading: false,
-      persons: [],
+      listpersons: [],
       firstname: '',
       lastname: '',
       birthdate: '',
       deathdate: '',
+      gender: 'M',
       isDragging: false,
       startX: 0,
       startY: 0,
@@ -159,6 +172,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['fetchPersons']),
     handleAddButton() {
       if (!this.firstname || !this.lastname || !this.birthdate) {
         return alert("Fill out all of the input fields!");
@@ -183,7 +197,7 @@ export default {
         .then(response => {
           this.loading = false;
           if (response.status === 200) {
-            this.$router.push(`/${response.data.id}`);
+            this.fetchPersons(); // Refresh the list after adding a person
           }
         })
         .catch(error => {
@@ -211,13 +225,22 @@ export default {
     handleMouseUp() {
       this.isDragging = false;
     },
-  }
+  },
+  computed: {
+    localPersons() {
+      return this.$store.state.Persons?.person;
+    },
+  },
+  async created() {
+    await this.fetchPersons();
+    this.listpersons = this.localPersons;
+  },
 };
-
 </script>
 
+
 <style scoped>
-.container {
+.fcontainer {
   display: flex;
   gap: 10px;
 }

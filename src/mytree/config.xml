@@ -1,0 +1,17 @@
+<widget id="com.mytree.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>MyTree</name>
+    <description>MyTree Généalogie App</description>
+    <author email="you@example.com" href="http://example.com">Your Name</author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-navigation href="http://*/*" />
+    <allow-navigation href="https://*/*" />
+
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <icon src="www/res/icon/android/icon.png" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="www/res/screen/android/splash.png" />
+        <preference name="AndroidWindowSplashScreenDuration" value="3000" />
+        <preference name="SplashScreenDelay" value="3000" />
+    </platform>
+</widget>

@@ -4,7 +4,7 @@ const Person = require('../../model/person');
 const { v4: uuidv4 } = require('uuid');
 
 /**
- * @route POST api/person/create
+ * @route POST api/persons/create
  * @desc Create a person
  * @access Public
  */
@@ -32,7 +32,23 @@ router.post('/create', async (req, res) => {
 });
 
 /**
- * @route GET api/person/:id
+ * @route GET api/persons/list
+ * @desc Get all persons
+ * @access Public
+ */
+router.get('/list', async (req, res) => {
+    try {
+        const persons = await Person.find({});
+        console.log('prout');
+        res.status(200).json({ persons });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: 'Server error' });
+    }
+});
+
+/**
+ * @route GET api/persons/:id
  * @desc Get a person
  * @access Public
  */
@@ -40,7 +56,7 @@ router.get('/:id', async (req, res) => {
     try {
         const person = await Person.findOne({ id: req.params.id });
         if (!person) {
-            return res.status(404).json({ msg: 'Person not found' });
+            return res.status(404).json({ msg: 'Person not found 1' });
         } else {
             res.status(200).json({ person });
         }
@@ -51,7 +67,7 @@ router.get('/:id', async (req, res) => {
 });
 
 /**
- * @route DELETE api/person/delete/:id
+ * @route DELETE api/persons/delete/:id
  * @desc Delete a person
  * @access Public
  */
@@ -59,7 +75,7 @@ router.delete('/delete/:id', async (req, res) => {
     try {
         const person = await Person.findOneAndDelete({ id: req.params.id });
         if (!person) {
-            return res.status(404).json({ msg: 'Person not found' });
+            return res.status(404).json({ msg: 'Person not found 2' });
         } else {
             res.status(200).json({ msg: 'Person is deleted' });
         }
@@ -70,7 +86,7 @@ router.delete('/delete/:id', async (req, res) => {
 });
 
 /**
- * @route PUT api/person/edit/:id
+ * @route PUT api/persons/edit/:id
  * @desc Edit a person's parents
  */
 router.put('/edit/:id', async (req, res) => {
@@ -88,7 +104,7 @@ router.put('/edit/:id', async (req, res) => {
         });
 
         if (!person) {
-            return res.status(404).json({ msg: 'Person not found' });
+            return res.status(404).json({ msg: 'Person not found 3' });
         } else {
             res.status(200).json({ msg: 'Person is updated' });
         }
@@ -99,26 +115,7 @@ router.put('/edit/:id', async (req, res) => {
 });
 
 /**
- * @route GET api/person/list
- * @desc Get all persons
- * @access Public
- */
-router.get('/list', async (req, res) => {
-    try {
-        const persons = await Person.find();
-        if (!persons) {
-            return res.status(404).json({ msg: 'No person found' });
-        } else {
-            res.status(200).json({ persons });
-        }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ msg: 'Server error' });
-    }
-});
-
-/**
- * @route GET api/person/children/:id
+ * @route GET api/persons/children/:id
  * @desc Get all children of a person
  * @access Public
  */
@@ -126,7 +123,7 @@ router.get('/children/:id', async (req, res) => {
     try {
         const person = await Person.findOne({ id: req.params.id });
         if (!person) {
-            return res.status(404).json({ msg: 'Person not found' });
+            return res.status(404).json({ msg: 'Person not found 4' });
         } else {
             res.status(200).json({ children: person.children });
         }
@@ -137,7 +134,7 @@ router.get('/children/:id', async (req, res) => {
 });
 
 /**
- * @route GET api/person/parents/:id
+ * @route GET api/persons/parents/:id
  * @desc Get parents of a person
  * @access Public
  */
@@ -145,7 +142,7 @@ router.get('/parents/:id', async (req, res) => {
     try {
         const person = await Person.findOne({ id: req.params.id });
         if (!person) {
-            return res.status(404).json({ msg: 'Person not found' });
+            return res.status(404).json({ msg: 'Person not found 5' });
         } else {
             res.status(200).json({ father: person.father, mother: person.mother });
         }
@@ -156,7 +153,7 @@ router.get('/parents/:id', async (req, res) => {
 });
 
 /**
- * @route GET api/person/spouse/:id
+ * @route GET api/persons/spouse/:id
  * @desc Get spouse of a person
  * @access Public
  */
@@ -164,7 +161,7 @@ router.get('/spouse/:id', async (req, res) => {
     try {
         const person = await Person.findOne({ id: req.params.id });
         if (!person) {
-            return res.status(404).json({ msg: 'Person not found' });
+            return res.status(404).json({ msg: 'Person not found 6' });
         } else {
             res.status(200).json({ spouse: person.spouse });
         }

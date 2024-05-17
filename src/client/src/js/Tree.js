@@ -20,8 +20,9 @@ const getters = {
 const actions = {
     async fetchPersons({ commit }) {
         try {
-            let res = await axios.get("http://localhost:3000/api/person/list");
-            commit('getPersons', res.data.persons);
+            let res = await axios.get("http://localhost:3000/api/persons/list");
+            console.log(res);
+            commit('setPersons', res.data.persons);
             return res;
         } catch (err) {
             console.log(err);
@@ -29,7 +30,7 @@ const actions = {
     },
     async createPerson({ commit }, person) {
         try {
-            await axios.post("http://localhost:3000/api/person/create", person);
+            await axios.post("http://localhost:3000/api/persons/create", person);
             commit('addPerson', person);
             router.push('/home');
         } catch (err) {
@@ -38,7 +39,7 @@ const actions = {
     },
     async updatePerson({ commit }, person) {
         try {
-            await axios.put(`http://localhost:3000/api/person/update/${person.id}`, person);
+            await axios.put(`http://localhost:3000/api/persons/update/${person.id}`, person);
             commit('updatePerson', person);
             router.push('/home');
         } catch (err) {
@@ -47,7 +48,7 @@ const actions = {
     },
     async deletePerson({ commit }, id) {
         try {
-            await axios.delete(`http://localhost:3000/api/person/delete/${id}`);
+            await axios.delete(`http://localhost:3000/api/persons/delete/${id}`);
             commit('deletePerson', id);
             router.push('/home');
         } catch (err) {
@@ -56,7 +57,7 @@ const actions = {
     },
     async fetchChildren({ commit }, id) {
         try {
-            let res = await axios.get(`http://localhost:3000/api/person/children/${id}`);
+            let res = await axios.get(`http://localhost:3000/api/persons/children/${id}`);
             commit('getChildren', res.data.children);
             return res;
         } catch (err) {
@@ -65,7 +66,7 @@ const actions = {
     },
     async fetchParents({ commit }, id) {
         try {
-            let res = await axios.get(`http://localhost:3000/api/person/parents/${id}`);
+            let res = await axios.get(`http://localhost:3000/api/persons/parents/${id}`);
             commit('getParents', res.data.parents);
             return res;
         } catch (err) {
@@ -74,7 +75,7 @@ const actions = {
     },
     async fetchSpouse({ commit }, id) {
         try {
-            let res = await axios.get(`http://localhost:3000/api/person/spouse/${id}`);
+            let res = await axios.get(`http://localhost:3000/api/persons/spouse/${id}`);
             commit('getSpouse', res.data.spouse);
             return res;
         } catch (err) {
@@ -83,7 +84,7 @@ const actions = {
     },
     async fetchPerson({ commit }, id) {
         try {
-            let res = await axios.get(`http://localhost:3000/api/person/${id}`);
+            let res = await axios.get(`http://localhost:3000/api/persons/${id}`);
             commit('getPerson', res.data.person);
             return res;
         } catch (err) {
@@ -116,7 +117,7 @@ const mutations = {
     getSpouse(state, spouse) {
         state.spouse = spouse;
     },
-    getPerson(state, person) {
+    setPersons(state, person) {
         state.person = person;
     }
 };
