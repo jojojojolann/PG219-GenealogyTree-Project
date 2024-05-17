@@ -27,3 +27,7 @@ MyTree est développée avec une pile technologique MERN (MongoDB, Express.js, V
 2. Accédez au dossier : `cd PG219-GenealogyTree-Project/src`
 3. Installez les dépendances : `npm install`
 4. Lancez le serveur : `npm run dev`
+
+## Répartition
+Mathieu ANTOINE : Page HomeView et Affichage de l'arbre.
+Jolann MADEC : Login/Register (JWT), Protection des routes, CSS, Rôle utilisateurs, API users (GET, POST, PUT, DELETE), API people (GET, POST, PUT, DELETE) et BDD
