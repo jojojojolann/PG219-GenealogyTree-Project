@@ -39,7 +39,6 @@ router.post('/create', async (req, res) => {
 router.get('/list', async (req, res) => {
     try {
         const persons = await Person.find({});
-        console.log('prout');
         res.status(200).json({ persons });
     } catch (err) {
         console.error(err);
